@@ -87,3 +87,15 @@ def choose_team(time: str):
 
     return data_list
 
+def build_dataframe(time:str):
+    team = choose_team(time.lower())
+
+    team_dataframe = pd.DataFrame(index=team[0].keys())
+
+    for i in range(len(team)):
+        team_dataframe[str(team[i]['ano'])] = team[i].values()
+        team_dataframe[str(team[i]['ano'])] = team_dataframe[str(team[i]['ano'])].apply(lambda x: float("{:.0f}".format(x)))
+    
+    team_dataframe['Media'] = team_dataframe.mean(axis=1).apply(lambda x: float("{:.1f}".format(x)))
+
+    return team_dataframe
