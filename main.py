@@ -30,6 +30,7 @@ end_api = '/statistics/overall'
 def choose_team(time: str):
     data_list = []
     cont_url_list = 0
+    cont_data_list = 0
 
     division = input('Em qual divisao esta o time?').upper()
 
@@ -54,22 +55,35 @@ def choose_team(time: str):
     
     middle_api = f'/unique-tournament/{serie}/season/'
 
-    urls_list = [
-        base_api + id_time + middle_api + enpoint_17 + end_api,
-        base_api + id_time + middle_api + enpoint_18 + end_api,
-        base_api + id_time + middle_api + enpoint_19 + end_api,
-        base_api + id_time + middle_api + enpoint_20 + end_api,
-        base_api + id_time + middle_api + enpoint_21 + end_api,
-        base_api + id_time + middle_api + enpoint_22 + end_api
-    ]
+    url_17 = base_api + id_time + middle_api + enpoint_17 + end_api
+    url_18 = base_api + id_time + middle_api + enpoint_18 + end_api
+    url_19 = base_api + id_time + middle_api + enpoint_19 + end_api
+    url_20 = base_api + id_time + middle_api + enpoint_20 + end_api
+    url_21 = base_api + id_time + middle_api + enpoint_21 + end_api
+    url_22 = base_api + id_time + middle_api + enpoint_22 + end_api
+
+
+    urls_list = [url_17, url_18, url_19, url_20, url_21, url_22]
+    
 
     for url in urls_list:
-        api_link = requests.get(url, headers=browsers).json()  # Correção aqui, adicione os parênteses
-        if 'error' not in api_link:
-            data = api_link['statistics']
-            data['ano'] = 2017 + cont_url_list  # Define o ano baseado no índice
-            data_list.append(data)
-        cont_url_list += 1
+        api_link = requests.get(url, headers = browsers).json()
+        if not 'error' in api_link:
+            data_list.append(api_link['statistics'])
+            if urls_list.index(urls_list[cont_url_list]) == 0:
+                data_list[cont_data_list]['ano'] = 2017
+            elif urls_list.index(urls_list[cont_url_list]) == 1:
+                data_list[cont_data_list]['ano'] = 2018
+            elif urls_list.index(urls_list[cont_url_list]) == 2:
+                data_list[cont_data_list]['ano'] = 2019
+            elif urls_list.index(urls_list[cont_url_list]) == 3:
+                data_list[cont_data_list]['ano'] = 2020
+            elif urls_list.index(urls_list[cont_url_list]) == 4:
+                data_list[cont_data_list]['ano'] = 2021
+            elif urls_list.index(urls_list[cont_url_list]) == 5:
+                data_list[cont_data_list]['ano'] = 2022
+            cont_data_list+=1
+        cont_url_list+=1
 
     return data_list
 
