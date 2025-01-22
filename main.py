@@ -99,3 +99,21 @@ def build_dataframe(time:str):
     team_dataframe['Media'] = team_dataframe.mean(axis=1).apply(lambda x: float("{:.1f}".format(x)))
 
     return team_dataframe
+
+def build_chart(metric: str, time1:str, time2:str):
+    df_time1 = build_dataframe(time1.lower())
+    df_time2 = build_dataframe(time2.lower())
+
+    anos=['2017', '2018', '2019', '2020', '2021', '2022']
+
+    fig = go.Figure(
+        data =[
+            go.Bar(name=time1, x=anos, y=[df_time1['2017'][metric], df_time1['2018'][metric], df_time1['2019'][metric], df_time1['2020'][metric], df_time1['2021'][metric], df_time1['2022'][metric]]),
+            go.Bar(name=time2, x=anos, y=[df_time2['2017'][metric], df_time2['2018'][metric], df_time2['2019'][metric], df_time2['2020'][metric], df_time2['2021'][metric], df_time2['2022'][metric]])
+
+        ],
+        layout_title_text = metric
+    )
+    
+    return fig.show()
+        
